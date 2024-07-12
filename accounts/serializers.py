@@ -25,3 +25,15 @@ class UserSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
         return user
+
+    def validate(self, data):
+        errors = []
+        for field, value in data.items():
+            try:
+                self.fields[field].run_validators(value)
+
+            except serializers.ValidationError as e:
+                errors.append({'field': field, 'message': str(e)})
+        if errors:
+            raise serializers.ValidationError({"errors": errors})
+        return data
