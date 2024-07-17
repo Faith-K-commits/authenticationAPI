@@ -70,8 +70,16 @@ def login_user(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_user_record(request, user_id):
-    # Get the user
-    user = get_object_or_404(User, userId=user_id)
+    try:
+        print(f"Attempting to find user with userId: {user_id}")
+        user = get_object_or_404(User, userId=user_id)
+        print(f"User found: {user}")
+    except User.DoesNotExist:
+        print("User not found")
+        return Response({
+            "detail": "User not found",
+            "code": "user_not_found"
+        }, status=status.HTTP_404_NOT_FOUND)
 
     """
     Check if the requesting user is either the user themselves
@@ -85,6 +93,7 @@ def get_user_record(request, user_id):
             "data": serializer.data
         }, status=status.HTTP_200_OK)
     else:
+        print("Permission denied")
         return Response({
             "status": "failure",
             "message": "You do not have permission to view this user."
