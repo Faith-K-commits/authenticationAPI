@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
-from .serializers import UserSerializer
+from .serializers import UserSerializer, OrganisationSerializer
 from .models import User, Organisation
 from django.shortcuts import get_object_or_404
 
@@ -98,3 +98,19 @@ def get_user_record(request, user_id):
             "status": "failure",
             "message": "You do not have permission to view this user."
         }, status=status.HTTP_403_FORBIDDEN)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_user_organisations(request):
+    user = request.user
+    organisations = user.organisations.all()
+    serializer = OrganisationSerializer(organisations, many=True)
+
+    return Response({
+        "status": "success",
+        "message": "Organisations retrieved successfully",
+        "data": {
+            "organisations": serializer.data
+        }
+    }, status=status.HTTP_200_OK)
