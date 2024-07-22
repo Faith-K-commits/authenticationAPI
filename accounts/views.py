@@ -12,20 +12,21 @@ from django.shortcuts import get_object_or_404
 def register_user(request):
     serializer = UserSerializer(data=request.data)
     if serializer.is_valid():
-        user = serializer.save()
-        refresh = RefreshToken.for_user(user)
-        user_data = UserSerializer(user).data
+        user = serializer.save()  # This triggers the CustomUserManager.create_user method
+        refresh = RefreshToken.for_user(user)  # Generate JWT token for the user
+        user_data = UserSerializer(user).data  # Serialize user data for response
         return Response({
             "status": "success",
             "message": "Registration successful",
             "data": {
-                "accessToken": str(refresh.access_token),
-                "user": user_data
+                "accessToken": str(refresh.access_token),  # Access token for authentication
+                "user": user_data  # Serialized user data
             }
         }, status=status.HTTP_201_CREATED)
     return Response({
         "status": "Bad request",
         "message": "Registration unsuccessful",
+        "errors": serializer.errors,
         "statusCode": 400,
     }, status=status.HTTP_400_BAD_REQUEST)
 

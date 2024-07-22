@@ -24,6 +24,12 @@ class UserSerializer(serializers.ModelSerializer):
         )
         user.set_password(validated_data['password'])
         user.save()
+
+        # Create an associated organisation
+        orgName = f"{validated_data['firstName']}'s Organisation"
+        organisation = Organisation.objects.create(name=orgName, description="Default Organization")
+        user.organisations.add(organisation)
+
         return user
 
     def validate(self, data):
