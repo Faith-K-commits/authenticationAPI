@@ -4,7 +4,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 
 
 class Organisation(models.Model):
-    orgId = models.CharField(max_length=36, default=uuid.uuid4, editable=False, unique=True)
+    orgId = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     name = models.CharField(max_length=255, null=False, blank=False)
     description = models.TextField(blank=True, null=True)
 
@@ -23,18 +23,25 @@ class CustomUserManager(BaseUserManager):
 
         # Create an organization for the user
         orgName = f"{firstName}'s Organisation"
-        Organisation.objects.create(name=orgName, description="Default organisation", users=[user])
+        organisation = Organisation.objects.create(name=orgName, description="Default organisation")
+        user.organisations.add(organisation)
 
         return user
 
     def create_superuser(self, email, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
+
+        if extra_fields.get('is_staff') is not True:
+            raise ValueError("Superuser must have is_staff=True.")
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError('Superuser must have is_superuser=True.')
+
         return self.create_user(email, password, **extra_fields)
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    userId = models.CharField(max_length=36, default=uuid.uuid4, editable=False, unique=True)
+    userId = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     firstName = models.CharField(max_length=255)
     lastName = models.CharField(max_length=255)
     email = models.EmailField(unique=True)
