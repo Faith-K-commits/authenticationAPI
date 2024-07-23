@@ -115,3 +115,60 @@ def get_user_organisations(request):
             "organisations": serializer.data
         }
     }, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_organisation_record(request, org_id):
+    organisation = get_object_or_404(Organisation, orgId=org_id)
+    if request.user.organisations.filter(orgId=org_id).exists():
+        serializer = OrganisationSerializer(organisation)
+        return Response({
+            'status': 'success',
+            'message': 'Organisation details retrieved successfully',
+            'data': serializer.data
+        }, status=status.HTTP_200_OK)
+    else:
+        return Response({
+            "status": "error",
+            "message": "You do not have permission to view this organisation",
+        }, status=403)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create_organisation(request):
+    serializer = OrganisationSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response({
+            'status': 'success',
+            'message': 'Organisation created successfully',
+            'data': serializer.data
+        }, status=status.HTTP_201_CREATED)
+    else:
+        return Response({
+            'status': 'Bad Request',
+            'message': 'client error',
+            'errors': serializer.errors,
+        }, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def add_user_to_organisation(request, org_id):
+    # Retrieve organisation by orgId
+    organisation = get_object_or_404(Organisation, orgId=org_id)
+    # Retrieve the user by userId from the request body
+    user_id = request.data.get('userId')
+    user = get_object_or_404(User, userId=user_id)
+
+    # Add the user to the organisation's users
+    organisation.users.add(user)
+    # Save the organisation to update the database
+    organisation.save()
+    # Return a success response
+    return Response({
+        'status': 'success',
+        'message': 'user added to organisation successfully',
+    }, status=status.HTTP_200_OK)
