@@ -1,12 +1,11 @@
-# User and Organisation API management Project
+# User and Organisation management API Project
 
 ## Table of contents
 - [Introduction](#introduction)
 - [Features](#features)
 - [Technologies Used](#technologies-used)
-- [Setup Instructions](#setup=instructions)
+- [Setup Instructions](#setup-instructions)
 - [Endpoints](#endpoints)
-- [Usage](#usage)
 
 ## Introduction
 This project is a django based API with user authentication and organisation management features.
