@@ -79,11 +79,8 @@ def login_user(request):
 @permission_classes([IsAuthenticated])
 def get_user_record(request, user_id):
     try:
-        print(f"Attempting to find user with userId: {user_id}")
         user = get_object_or_404(User, userId=user_id)
-        print(f"User found: {user}")
     except User.DoesNotExist:
-        print("User not found")
         return Response({
             "detail": "User not found",
             "code": "user_not_found"
