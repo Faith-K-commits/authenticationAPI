@@ -40,7 +40,7 @@ This project is a django based API with user authentication and organisation man
   - Method: POST 
   - Endpoint: `/auth/register`
   - Description: Registers a new user.
-  - Example request: POST http://127.0.0.1:8000/auth/register
+    - Example request: `http://127.0.0.1:8000/auth/register`
   ```json
         {
           "firstName": "Jane",
@@ -72,7 +72,7 @@ This project is a django based API with user authentication and organisation man
   - Method: POST
   - Endpoint: `auth/login`
   - Description: Log in a user
-  - Example request: POST http://localhost:8000/auth/login
+  - Example request: `http://localhost:8000/auth/login`
   ```json
     {
       "email": "jane.doe@test.com",
@@ -121,7 +121,7 @@ This project is a django based API with user authentication and organisation man
 - Method: GET
 - Endpoint: `api/organisations`
 - Description: Retrieve user organisations
-- Example request: http://127.0.0.1:8000/api/organisations
+- Example request: `http://127.0.0.1:8000/api/organisations`
 - Example response:
 ```json
 {
@@ -149,7 +149,7 @@ This project is a django based API with user authentication and organisation man
 - Method: GET
 - Endpoint: `api/organisations/<uuid:org_id>`
 - Description: Retrieve organisation record
-- Example Request: http://127.0.0.1:8000/api/organisations/d04ddeaa-65d6-4e6b-9528-8b89f2283271
+- Example Request: `http://127.0.0.1:8000/api/organisations/d04ddeaa-65d6-4e6b-9528-8b89f2283271`
 - Example Response:
 ```json
 {
@@ -183,7 +183,7 @@ This project is a django based API with user authentication and organisation man
 - Method: POST
 - Endpoint: `api/organisations/<uuid:org_id>/users`
 - Description: Add user to an organisation
-- Example request: http://127.0.0.1:8000/api/organisations/0a2f5254-0991-4865-bb84-942331f7d6f0/users
+- Example request: `http://127.0.0.1:8000/api/organisations/0a2f5254-0991-4865-bb84-942331f7d6f0/users`
 - Example response:
 ```json
 {
