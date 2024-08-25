@@ -1,4 +1,4 @@
-from .models import User
+from .models import User, Organisation
 from rest_framework.test import APITestCase
 from rest_framework import status
 from rest_framework_simplejwt.tokens import AccessToken
@@ -25,8 +25,7 @@ class AuthenticationTests(APITestCase):
         # Verify the creation of the associated organisation
         user = User.objects.get(email='newuser@example.com')
         self.assertTrue(user.organisations.exists())
-        org = user.organisations.first()
-        self.assertEqual(org.name, "New's Organisation")
+        self.assertEqual(user.organisations.first().name, "New's Organisation")
 
     def test_user_login(self):
         User.objects.create_user(
