@@ -10,6 +10,8 @@
 # Introduction
 This project is a django based API with user authentication and organisation management features.
 
+Link to deployed site: https://auth-management-f7a0e8b31e1b.herokuapp.com/auth/register
+
 # Features
 - User registration and login with JWT Authentication
 - Fetching user records and organisations
