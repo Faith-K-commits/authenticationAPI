@@ -1,5 +1,6 @@
 import App from "./App";
 import LandingPage from "./components/LandingPage";
+import Home from "./Pages/Home";
 import Login from "./Pages/Login";
 
 
@@ -15,6 +16,10 @@ const routes = [
             {
                 path: '/login',
                 element: <Login />,
+            },
+            {
+                path: '/home',
+                element: <Home />,
             },
         ],
     }
